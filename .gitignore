@@ -1,0 +1,16 @@
+# Claude / workflow engine
+.sigma-vnc-v1/context/
+.sigma-vnc-v1/env/.env
+.claude.backup.*/
+.claude/settings.local.json
+.mcp.json
+
+# Serena
+.serena/cache/
+.serena/memories/
+.serena/project.local.yml
+
+# Dashboard (Astro)
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.astro/

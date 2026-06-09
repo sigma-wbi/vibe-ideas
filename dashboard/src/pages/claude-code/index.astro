@@ -1,0 +1,76 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getSectionBySlug } from '../../lib/sections';
+
+const section = getSectionBySlug('claude-code')!;
+const entries = await getCollection('claudeCode');
+const sorted = entries.sort((a, b) => {
+  // README/intro 먼저 고정 → 최신 날짜순(newest first) → 무날짜 맨 뒤
+  const aIntro = a.id.toLowerCase() === 'readme' ? 0 : 1;
+  const bIntro = b.id.toLowerCase() === 'readme' ? 0 : 1;
+  if (aIntro !== bIntro) return aIntro - bIntro;
+  return (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0);
+});
+---
+
+<Layout title={section.title} description={section.description}>
+  <Header currentSlug="claude-code" />
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="text-3xl">{section.icon}</span>
+      <div>
+        <h1 class="text-3xl font-bold" style="color: var(--text-primary);">{section.title}</h1>
+        <p style="color: var(--text-secondary);">{section.description}</p>
+      </div>
+    </div>
+
+    {sorted.length === 0 ? (
+      <div class="rounded-lg p-8 text-center" style="background: var(--bg-card); border: 1px solid var(--border);">
+        <p class="text-lg mb-2" style="color: var(--text-secondary);">아직 문서가 없습니다</p>
+        <p class="text-sm" style="color: var(--text-secondary);">docs/01-claude-code-refine/ 에 마크다운 파일을 추가해보세요</p>
+      </div>
+    ) : (
+      <ul class="space-y-3">
+        {sorted.map((entry) => (
+          <li>
+            <a
+              href={`${import.meta.env.BASE_URL}claude-code/${entry.id}`}
+              class="block rounded-lg p-4 transition-colors hover:brightness-110"
+              style="background: var(--bg-card); border: 1px solid var(--border);"
+            >
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <h2 class="font-semibold" style="color: var(--text-primary);">{entry.data.title}</h2>
+                  {entry.data.description && (
+                    <p class="text-sm mt-1" style="color: var(--text-secondary);">{entry.data.description}</p>
+                  )}
+                </div>
+                {entry.data.date && (
+                  <time class="text-xs shrink-0" style="color: var(--text-secondary);">
+                    {entry.data.date.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })}
+                  </time>
+                )}
+              </div>
+              {entry.data.tags && entry.data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-1.5 mt-2">
+                  {entry.data.tags.map((tag: string) => (
+                    <span
+                      class="text-xs px-2 py-0.5 rounded-full"
+                      style="background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent);"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
+  <Footer />
+</Layout>

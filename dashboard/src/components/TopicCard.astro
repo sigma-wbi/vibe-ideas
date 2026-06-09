@@ -1,0 +1,47 @@
+---
+interface Props {
+  icon: string;
+  title: string;
+  description: string;
+  href: string;
+  docCount: number;
+  progress: number;
+  accentColor: string;
+}
+
+const { icon, title, description, href, docCount, progress, accentColor } = Astro.props;
+
+const colorMap: Record<string, string> = {
+  sky: '#38bdf8',
+  emerald: '#34d399',
+  amber: '#fbbf24',
+  violet: '#a78bfa',
+  rose: '#fb7185',
+  teal: '#2dd4bf',
+};
+const accent = colorMap[accentColor] ?? '#38bdf8';
+---
+
+<a href={href} class="block rounded-xl p-5 transition-all hover:scale-[1.02] hover:shadow-lg group" style={`background: var(--bg-card); border: 1px solid var(--border);`}>
+  <div class="flex items-start justify-between mb-3">
+    <span class="text-2xl">{icon}</span>
+    <span class="text-xs px-2 py-0.5 rounded-full" style={`background: ${accent}20; color: ${accent};`}>
+      {docCount} docs
+    </span>
+  </div>
+
+  <h3 class="font-semibold text-lg mb-1 group-hover:underline" style="color: var(--text-primary);">
+    {title}
+  </h3>
+  <p class="text-sm mb-4" style="color: var(--text-secondary);">
+    {description}
+  </p>
+
+  <!-- Progress bar -->
+  <div class="w-full rounded-full h-1.5" style="background: var(--border);">
+    <div class="h-1.5 rounded-full transition-all" style={`width: ${progress}%; background: ${accent};`}></div>
+  </div>
+  <p class="text-xs mt-1" style="color: var(--text-secondary);">
+    진행률 {progress}%
+  </p>
+</a>

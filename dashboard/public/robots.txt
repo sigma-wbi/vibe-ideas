@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: 호스팅 도메인 결정 후 sitemap 절대 URL 추가
+# Sitemap: https://<도메인>/sitemap-index.xml

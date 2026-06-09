@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '아이디어 검증 기록과 AI 활용 노하우' } = Astro.props;
+const fullTitle = `${title} | Ideas`;
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const ogImage = `${siteUrl}${import.meta.env.BASE_URL}og-image.png`;
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Pagefind UI CSS -->
+    <link href={`${import.meta.env.BASE_URL}pagefind/pagefind-ui.css`} rel="stylesheet" />
+
+    <!-- FOUC 방지: JS 실행 전 테마 class 즉시 적용 -->
+    <script is:inline define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
+      window.__BASE_URL__ = baseUrl;
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.add(theme);
+    </script>
+  </head>
+  <body class="min-h-screen">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import TopicCard from '../components/TopicCard.astro';
+import StatsGrid from '../components/StatsGrid.astro';
+import Footer from '../components/Footer.astro';
+import ProgressChart from '../components/ProgressChart.tsx';
+import { sections } from '../lib/sections';
+
+const base = import.meta.env.BASE_URL;
+
+// Fetch all collections
+const claudeCode = await getCollection('claudeCode');
+const arsenal = await getCollection('arsenal');
+const projects = await getCollection('projects');
+
+const collectionMap: Record<string, any[]> = {
+  claudeCode,
+  arsenal,
+  projects,
+};
+
+// Calculate stats per section
+const sectionStats = sections.map((s) => {
+  const entries = collectionMap[s.collection] ?? [];
+  const docCount = entries.length;
+  const avgProgress = docCount > 0
+    ? Math.round(entries.reduce((sum, e) => sum + (e.data.progress ?? 0), 0) / docCount)
+    : 0;
+  return { ...s, docCount, avgProgress };
+});
+
+const totalDocs = sectionStats.reduce((sum, s) => sum + s.docCount, 0);
+const avgProgress = totalDocs > 0
+  ? Math.round(sectionStats.reduce((sum, s) => sum + s.avgProgress * s.docCount, 0) / totalDocs)
+  : 0;
+---
+
+<Layout title="Dashboard">
+  <Header />
+
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Hero -->
+    <section class="text-center mb-12">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-3" style="color: var(--text-primary);">
+        Idea Dashboard
+      </h1>
+      <p class="text-lg" style="color: var(--text-secondary);">
+        아이디어 검증 기록과 AI 활용 노하우
+      </p>
+    </section>
+
+    <!-- Topic Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12" aria-label="Topic sections">
+      {sectionStats.map((s) => (
+        <TopicCard
+          icon={s.icon}
+          title={s.title}
+          description={s.description}
+          href={`${base}${s.slug}/`}
+          docCount={s.docCount}
+          progress={s.avgProgress}
+          accentColor={s.accentColor}
+        />
+      ))}
+    </section>
+
+    <!-- Stats -->
+    <section class="mb-12" aria-label="Statistics">
+      <StatsGrid totalDocs={totalDocs} totalSections={sections.length} avgProgress={avgProgress} />
+    </section>
+
+    <!-- Progress Chart -->
+    <section aria-label="Progress chart">
+      <ProgressChart
+        client:visible
+        stats={sectionStats.map((s) => ({ title: s.title, avgProgress: s.avgProgress, accentColor: s.accentColor }))}
+      />
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

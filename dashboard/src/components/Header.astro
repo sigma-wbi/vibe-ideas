@@ -1,0 +1,107 @@
+---
+import { sections } from '../lib/sections';
+import SearchBar from './SearchBar.tsx';
+
+interface Props {
+  currentSlug?: string;
+}
+
+const { currentSlug } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<header class="sticky top-0 z-50 border-b" style="background: var(--bg-primary); border-color: var(--border);">
+  <nav class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between" aria-label="Main navigation">
+    <a href={`${base}`} class="font-bold text-lg flex items-center gap-2" style="color: var(--accent);">
+      Ideas
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-1">
+      {sections.map((s) => (
+        <li>
+          <a
+            href={`${base}${s.slug}/`}
+            class:list={[
+              'px-3 py-1.5 rounded-md text-sm transition-colors',
+              currentSlug === s.slug ? 'font-semibold' : 'opacity-75 hover:opacity-100',
+            ]}
+            style={currentSlug === s.slug ? 'background: var(--bg-card); color: var(--text-primary);' : 'color: var(--text-secondary);'}
+          >
+            <span class="mr-1">{s.icon}</span>{s.title.split(' ').slice(0, 2).join(' ')}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <!-- Search -->
+      <SearchBar client:load />
+
+
+      <!-- Theme toggle -->
+      <button
+        id="theme-toggle"
+        class="p-2 rounded-md transition-colors hover:brightness-110"
+        style="background: var(--bg-card); color: var(--text-primary);"
+        aria-label="Toggle dark/light theme"
+      >
+        <span id="theme-icon">🌙</span>
+      </button>
+
+      <!-- Mobile menu button -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2 rounded-md"
+        style="background: var(--bg-card); color: var(--text-primary);"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  <div id="mobile-menu" class="hidden md:hidden border-t" style="background: var(--bg-primary); border-color: var(--border);">
+    <ul class="px-4 py-2 space-y-1">
+      {sections.map((s) => (
+        <li>
+          <a
+            href={`${base}${s.slug}/`}
+            class="block px-3 py-2 rounded-md text-sm"
+            style={currentSlug === s.slug ? 'background: var(--bg-card); color: var(--text-primary);' : 'color: var(--text-secondary);'}
+          >
+            <span class="mr-2">{s.icon}</span>{s.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script is:inline>
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  const icon = document.getElementById('theme-icon');
+
+  function updateIcon() {
+    icon.textContent = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
+  }
+  updateIcon();
+
+  toggle.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    document.documentElement.classList.toggle('light', !isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateIcon();
+  });
+
+  // Mobile menu
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', () => {
+    const expanded = menu.classList.toggle('hidden');
+    menuBtn.setAttribute('aria-expanded', String(!expanded));
+  });
+</script>

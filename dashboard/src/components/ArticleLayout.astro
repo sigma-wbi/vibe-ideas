@@ -1,0 +1,73 @@
+---
+import { getSectionBySlug } from '../lib/sections';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: Date;
+  tags?: string[];
+  sectionSlug: string;
+}
+
+const { title, description, date, tags, sectionSlug } = Astro.props;
+const section = getSectionBySlug(sectionSlug);
+const sectionTitle = section?.title ?? sectionSlug;
+const sectionIcon = section?.icon ?? '';
+const backUrl = `${import.meta.env.BASE_URL}${sectionSlug}`;
+---
+
+<main class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="flex items-center gap-2 text-sm mb-6" style="color: var(--text-secondary);">
+    <a
+      href={backUrl}
+      class="flex items-center gap-1 transition-colors hover:opacity-80"
+      style="color: var(--accent);"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span>{sectionIcon} {sectionTitle}</span>
+    </a>
+    <span>/</span>
+    <span class="truncate" style="color: var(--text-primary);">{title}</span>
+  </nav>
+
+  <!-- Article Header -->
+  <header class="mb-8">
+    <h1 class="text-3xl font-extrabold tracking-tight mb-2" style="color: var(--text-primary);">
+      {title}
+    </h1>
+    {description && (
+      <p class="text-lg" style="color: var(--text-secondary);">{description}</p>
+    )}
+    <div class="flex flex-wrap items-center gap-3 mt-3">
+      {date && (
+        <time
+          class="text-sm"
+          style="color: var(--text-secondary);"
+          datetime={date.toISOString()}
+        >
+          {date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      )}
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span
+              class="text-xs px-2 py-0.5 rounded-full font-medium"
+              style={`background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent);`}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </header>
+
+  <!-- Article Body -->
+  <article class="prose max-w-none" style="color: var(--text-primary);">
+    <slot />
+  </article>
+</main>

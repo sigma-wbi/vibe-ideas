@@ -1,0 +1,179 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* === Dark/Light Theme Variables === */
+
+:root {
+  --bg-primary: #f8fafc;     /* slate-50 */
+  --bg-card: #ffffff;
+  --text-primary: #0f172a;   /* slate-900 */
+  --text-secondary: #64748b; /* slate-500 */
+  --accent: #0284c7;         /* sky-600 */
+  --border: #e2e8f0;         /* slate-200 */
+}
+
+.dark {
+  --bg-primary: #0f172a;     /* slate-900 */
+  --bg-card: #1e293b;        /* slate-800 */
+  --text-primary: #f1f5f9;   /* slate-100 */
+  --text-secondary: #94a3b8; /* slate-400 */
+  --accent: #38bdf8;         /* sky-400 */
+  --border: #334155;         /* slate-700 */
+}
+
+/* === Base Styles === */
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* === Prose (Typography) Theme Override === */
+
+/* Light mode prose */
+.prose {
+  --tw-prose-body: var(--text-primary);
+  --tw-prose-headings: var(--text-primary);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--text-primary);
+  --tw-prose-counters: var(--text-secondary);
+  --tw-prose-bullets: var(--text-secondary);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--text-primary);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--text-secondary);
+  --tw-prose-code: var(--text-primary);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+/* Dark mode prose — same variables, auto-resolved via .dark CSS vars */
+.dark .prose {
+  --tw-prose-pre-bg: #1e293b;
+  --tw-prose-pre-code: #e2e8f0;
+}
+
+/* === Prose Element Enhancements === */
+
+/* Hide duplicate h1 from markdown (already shown in ArticleLayout header) */
+.prose > h1:first-child {
+  display: none;
+}
+
+/* Headings — visual hierarchy */
+.prose h1 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-top: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+/* Blockquote — accent left border + subtle bg */
+.prose blockquote {
+  border-left: 4px solid var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 0.75rem 1rem;
+  border-radius: 0 0.375rem 0.375rem 0;
+  font-style: normal;
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+/* Table — borders, header bg, stripe, responsive */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.prose thead th {
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.625rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.prose tbody td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+/* Inline code — subtle highlight */
+.prose :where(code):not(:where(pre *)) {
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.prose :where(code):not(:where(pre *))::before,
+.prose :where(code):not(:where(pre *))::after {
+  content: none;
+}
+
+/* Code block — rounded with scroll */
+.prose pre {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+/* Links — accent color + hover underline */
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+/* Strong emphasis */
+.prose strong {
+  font-weight: 700;
+}
+
+/* Horizontal rule */
+.prose hr {
+  border-color: var(--border);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* List markers */
+.prose ul > li::marker {
+  color: var(--accent);
+}
+
+.prose ol > li::marker {
+  color: var(--accent);
+  font-weight: 600;
+}

@@ -19,6 +19,15 @@ export const sections: SectionConfig[] = [
     slug: 'claude-code',
   },
   {
+    id: '02',
+    collection: 'projects',
+    title: 'Side Projects',
+    description: '아이디어 검증 기록과 사이드 프로젝트',
+    icon: '🚀',
+    accentColor: 'violet',
+    slug: 'projects',
+  },
+  {
     id: '03',
     collection: 'arsenal',
     title: 'AI Arsenal',
@@ -26,15 +35,6 @@ export const sections: SectionConfig[] = [
     icon: '⚡',
     accentColor: 'amber',
     slug: 'arsenal',
-  },
-  {
-    id: '04',
-    collection: 'projects',
-    title: 'Side Projects',
-    description: '아이디어 검증 기록과 사이드 프로젝트',
-    icon: '🚀',
-    accentColor: 'violet',
-    slug: 'projects',
   },
 ];
 

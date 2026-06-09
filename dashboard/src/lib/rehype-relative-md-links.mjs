@@ -9,8 +9,8 @@ const SITE_BASE = '';
 // 더 깊은 경로가 먼저 매칭되도록 순서 유지
 const COLLECTION_MAP = [
   { docsPath: '01-claude-code-refine', urlPrefix: 'claude-code' },
+  { docsPath: '02-side-projects', urlPrefix: 'projects' },
   { docsPath: '03-ai-arsenal', urlPrefix: 'arsenal' },
-  { docsPath: '04-side-projects', urlPrefix: 'projects' },
 ];
 
 const DIR_INDEX_FILES = ['_index.md', 'README.md', 'readme.md', 'index.md'];

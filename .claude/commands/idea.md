@@ -61,11 +61,11 @@
 > `--quick` 모드: 이 Step 스킵. 콘솔에 점수 + 판정만 출력.
 
 **문서 저장:**
-- 경로: `docs/04-side-projects/idea/YYYYMMDD_{slug}.md`
+- 경로: `docs/02-side-projects/idea/YYYYMMDD_{slug}.md`
 - 전체 분석 내용 (점수, 근거, 판정) + `## 분석 과정 메모` 섹션 (WebSearch 원시 결과, 판단 근거 원문, 검색 쿼리 등)
 
 **README 분석 목록 갱신:**
-- `docs/04-side-projects/idea/README.md`의 "분석 목록" 섹션에 새 문서 링크 추가
+- `docs/02-side-projects/idea/README.md`의 "분석 목록" 섹션에 새 문서 링크 추가
 - 형식: `- [{날짜} {아이디어 제목}](YYYYMMDD_{slug}.md) — {판정} ({점수}/10)`
 
 **문서 템플릿:**
@@ -132,7 +132,7 @@
 ```
 {판정에 따른 이모지} 아이디어 분석 완료: {아이디어 제목}
    판정: {PASS/CONDITIONAL/HOLD/REJECT} ({평균점}/10)
-   문서: docs/04-side-projects/idea/YYYYMMDD_{slug}.md
+   문서: docs/02-side-projects/idea/YYYYMMDD_{slug}.md
 
    {PASS일 때} 다음 단계: /spec "{아이디어}" — MVP 설계로 진행
    {CONDITIONAL일 때} 조건: {해결해야 할 항목}

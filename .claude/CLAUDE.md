@@ -389,8 +389,8 @@ Hook이 파싱하는 기계용 상태 파일. 위치: `.sigma-vnc-v1/context/sta
 | 번호 | 영역 | 폴더 |
 |------|------|------|
 | 01 | Claude Code 규칙/설정 개선 | `docs/01-claude-code-refine` |
+| 02 | 사이드 프로젝트 / 아이디어 | `docs/02-side-projects` |
 | 03 | AI 무기고 | `docs/03-ai-arsenal` |
-| 04 | 사이드 프로젝트 / 아이디어 | `docs/04-side-projects` |
 
 - **영역 미해당 시 번호 생략 가능:** 루트 설정, gitignore, CI 등 특정 영역에 속하지 않는 변경은 `chore: {설명}` 형태로 번호 없이 커밋
 - **멀티 영역 변경 시:** 주된 변경 영역의 번호를 사용

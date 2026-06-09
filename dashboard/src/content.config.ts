@@ -30,7 +30,7 @@ const arsenal = defineCollection({
 const projects = defineCollection({
   loader: glob({
     pattern: '**/*.md',
-    base: '../docs/04-side-projects',
+    base: '../docs/02-side-projects',
   }),
   schema: docSchema,
 });
